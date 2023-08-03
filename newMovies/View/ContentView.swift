@@ -10,23 +10,29 @@ import SwiftUI
 struct ContentView: View {
     //Need observedObject to listen to the network manage
     @ObservedObject var networkManager = NetworkManager()
+
     
     var body: some View {
         NavigationView {
             List(networkManager.movies){ movies in
-                HStack{
-                    Image(systemName: "popcorn.fill")
-                        .resizable()
-                        .frame(width: 60,height: 60)
-                    VStack{
-                        Text(movies.title)
-                            .font(.title3)
-                            .frame(alignment: .leading)
-                        Text(movies.overview)
-                            .font(.body)
-                        .lineLimit(2)                    }
-                }
-                
+                let posterURL = URL(string: "https://image.tmdb.org/t/p/original" + movies.poster_path)
+                    HStack(alignment: .top){
+                        AsyncImage(url: posterURL) { postImage in
+                            postImage
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 90, height: 90)
+                        } placeholder: {
+                            Image(systemName: "popcorn.fill")
+                        }
+                        VStack(alignment: .leading){
+                            Text(movies.title)
+                                .lineLimit(1)
+                            Text(movies.overview)
+                                .font(.body)
+                            .lineLimit(2)
+                        }
+                    }
             }
             .listStyle(.plain)
             .navigationTitle("New Releases 🍿")

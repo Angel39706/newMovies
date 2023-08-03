@@ -12,6 +12,7 @@ class NetworkManager: ObservableObject {
     
     //need a published variable to notify listeners when there is changes
     @Published var movies = [Movies]()
+
     
     //Create function to get data (downloading only)
     func getData() {
